@@ -9,10 +9,11 @@ import json
 from pymongo import MongoClient
 
 class PageSpider(threading.Thread):
-    def __init__(self, startPage, endPage):
+    def __init__(self, startPage, endPage, cookie):
         threading.Thread.__init__(self)
         self.startPage = startPage
         self.endPage = endPage
+        self.cookie = cookie
         self.base_url_pat = "http://www.newsmth.net/nForum/online?ajax&p=%d"
         self.client = MongoClient('127.0.0.1', 27017)
         self.db=self.client.shuimu
@@ -22,6 +23,7 @@ class PageSpider(threading.Thread):
         user_info_url = 'http://www.newsmth.net/nForum/user/query/%s.json' % user_id
         req = urllib2.Request(user_info_url)
         req.add_header('X-Requested-With', 'XMLHttpRequest')
+        req.add_header('User-Agent', 'Mozilla/5.0 (X11; FreeBSD amd64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36')
         user_content = urllib2.urlopen(req).read().decode('gbk', 'ignore')
         try:
             info = json.loads(user_content)
@@ -33,7 +35,8 @@ class PageSpider(threading.Thread):
     def _get_user_list_from_page(self, url):
         print url
         req = urllib2.Request(url)
-        req.add_header('Cookie', '')
+        req.add_header('Cookie', self.cookie)
+        req.add_header('User-Agent', 'Mozilla/5.0 (X11; FreeBSD amd64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36')
         response = urllib2.urlopen(req)
         content = response.read()
         dom = soupparser.fromstring(content.decode('gbk'))
