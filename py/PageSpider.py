@@ -42,7 +42,7 @@ class PageSpider(threading.Thread):
         dom = soupparser.fromstring(content.decode('gbk'))
         unodes = dom.xpath('//tr/td[2]/a')
         for u in unodes:
-            _get_user_info(u.text)
+            self._get_user_info(u.text)
             
     def run(self):
         for i in xrange(self.startPage, self.endPage):
