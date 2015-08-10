@@ -1,5 +1,5 @@
 # shuimu_user
-获取水木用户信息的爬虫脚本。
+获取水木用户信息的爬虫脚本。并将结果保存到本地mongodb中。
 
 ## 依赖
 
@@ -11,6 +11,7 @@
 
 + 打开shuimu_user.py文件。设置cookie变量为你当前登录用户的cookie值。(你懂的)
 + python shuimu_user.py
++ 会将结果保存在本机上的mongodb中。（mongodb配置写在代码中。如需修改，可以修改代码）
 
 ## 基本原理
 
